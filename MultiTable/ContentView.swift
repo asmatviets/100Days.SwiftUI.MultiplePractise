@@ -28,6 +28,9 @@ import SwiftUI
 //}
 
 struct ContentView: View {
+    @State private var backgroundColor = Color.yellow
+    @State private var colourForRows = Color.purple
+    
     @State private var digitToPractise = 2
     @State private var userAnswer = 0
     @State private var isAnswerCorrect = ""
@@ -55,7 +58,7 @@ struct ContentView: View {
 
         NavigationView {
             ZStack {
-                Color.yellow.ignoresSafeArea()
+                backgroundColor.ignoresSafeArea()
                 
                 LazyVStack (spacing: 20){
                     
@@ -63,7 +66,7 @@ struct ContentView: View {
                         Stepper("   \(digitToPractise)", value: $digitToPractise, in: 2...12, step: 1) {_ in
                             newGame()
                         }
-                        .background(.purple)
+                        .background(colourForRows)
                         .border(.black)
                     } header: {
                         Text("Сhoose digit to practise")
@@ -77,7 +80,7 @@ struct ContentView: View {
                             }
                         }
                         .padding(.horizontal)
-                        .background(.purple)
+                        .background(colourForRows)
                         .border(.black)
                         .pickerStyle(.segmented)
                     } header: {
@@ -90,7 +93,7 @@ struct ContentView: View {
                             Text("\(digitToPractise) x \(randomElement)      =    ")
                                 .frame(maxWidth: 200, maxHeight: 100)
                                 .border(.black)
-                                .background(.purple)
+                                .background(colourForRows)
                             TextField("Your_answer", value: $userAnswer, format: .number)
                                 .textFieldStyle(.roundedBorder)
                                 .border(.black)
@@ -122,7 +125,7 @@ struct ContentView: View {
                             
                         }
                         .frame(width: 115, height: 40)
-                        .background(.purple)
+                        .background(colourForRows)
                         .foregroundColor(.white)
                         .buttonBorderShape(.roundedRectangle(radius: 20))
                         
@@ -144,9 +147,12 @@ struct ContentView: View {
                                 ShowSheetView(arrayOfQuestions: arrayOfQuestions)
                             }
                         }
-                        
                     }
-                    
+                    VStack {
+                        Text("Choose your color")
+                        ColorPicker("Background", selection: $backgroundColor)
+                        ColorPicker("Rows", selection: $colourForRows)
+                    }
                 }
                 .padding([.horizontal, .bottom])
                 .navigationTitle("Multiplication Practise")
@@ -174,6 +180,7 @@ struct ContentView: View {
                     }
                 }
             }
+            
         }
         .onAppear(perform: {
             generatedQuestions()
