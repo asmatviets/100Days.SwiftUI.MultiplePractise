@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1A174812294F3C71001E8223 /* ShowSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A174811294F3C71001E8223 /* ShowSheetView.swift */; };
+		1A174814294F4242001E8223 /* DataToShareClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A174813294F4242001E8223 /* DataToShareClass.swift */; };
+		1A174816294F432B001E8223 /* QuestionItems.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A174815294F432B001E8223 /* QuestionItems.swift */; };
 		1A3ABB902949A158003B6DE5 /* MultiTableApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A3ABB8F2949A158003B6DE5 /* MultiTableApp.swift */; };
 		1A3ABB922949A158003B6DE5 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A3ABB912949A158003B6DE5 /* ContentView.swift */; };
 		1A3ABB942949A159003B6DE5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1A3ABB932949A159003B6DE5 /* Assets.xcassets */; };
@@ -14,6 +17,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1A174811294F3C71001E8223 /* ShowSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowSheetView.swift; sourceTree = "<group>"; };
+		1A174813294F4242001E8223 /* DataToShareClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataToShareClass.swift; sourceTree = "<group>"; };
+		1A174815294F432B001E8223 /* QuestionItems.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionItems.swift; sourceTree = "<group>"; };
 		1A3ABB8C2949A158003B6DE5 /* MultiTable.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MultiTable.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1A3ABB8F2949A158003B6DE5 /* MultiTableApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiTableApp.swift; sourceTree = "<group>"; };
 		1A3ABB912949A158003B6DE5 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -53,6 +59,9 @@
 			children = (
 				1A3ABB8F2949A158003B6DE5 /* MultiTableApp.swift */,
 				1A3ABB912949A158003B6DE5 /* ContentView.swift */,
+				1A174815294F432B001E8223 /* QuestionItems.swift */,
+				1A174811294F3C71001E8223 /* ShowSheetView.swift */,
+				1A174813294F4242001E8223 /* DataToShareClass.swift */,
 				1A3ABB932949A159003B6DE5 /* Assets.xcassets */,
 				1A3ABB952949A15A003B6DE5 /* Preview Content */,
 			);
@@ -138,6 +147,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				1A3ABB922949A158003B6DE5 /* ContentView.swift in Sources */,
+				1A174816294F432B001E8223 /* QuestionItems.swift in Sources */,
+				1A174812294F3C71001E8223 /* ShowSheetView.swift in Sources */,
+				1A174814294F4242001E8223 /* DataToShareClass.swift in Sources */,
 				1A3ABB902949A158003B6DE5 /* MultiTableApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

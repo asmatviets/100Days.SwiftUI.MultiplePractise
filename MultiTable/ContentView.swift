@@ -7,28 +7,28 @@
 
 import SwiftUI
 
-struct Question {
-    var textToShow: String
-    var correctAnswer: Int
-}
+//struct Question {
+//    var textToShow: String
+//    var correctAnswer: Int
+//}
 
 // struct to create second view with a check of an answer
-struct SecondView: View {
-    let isAnswerCorrect: String
-    let scoreIs: String
-    @Environment(\.dismiss) var dismiss
-    
-    var body: some View {
-        Text("Check answer view")
-        Button("hide") {
-            dismiss()
-        }
-        
-    }
-}
+//struct SecondView: View {
+//    let isAnswerCorrect: String
+//    let scoreIs: String
+//    @Environment(\.dismiss) var dismiss
+//
+//    var body: some View {
+//        Text("Check answer view")
+//        Button("hide") {
+//            dismiss()
+//        }
+//
+//    }
+//}
 
 struct ContentView: View {
-    @State private var digitOne = 2
+    @State private var digitToPractise = 2
     @State private var userAnswer = 0
     @State private var isAnswerCorrect = ""
     @State private var selectedAmountQuestions = 5
@@ -43,121 +43,152 @@ struct ContentView: View {
     // to show a sheet we need @State
     @State private var showingSheet = false
     
-    @State private var arrayOfQuestions = []
+    @StateObject var arrayOfQuestions = dataToShare()
     @State private var tapCountForArray = 0
-    
-    var questionsArray = [5, 10, 20]
+ 
+    var amountOfQuestionsToChoose = [5, 10, 20]
    
     
  
 
     var body: some View {
+
         NavigationView {
-            
-            VStack {
-                Form {
+            ZStack {
+                Color.yellow.ignoresSafeArea()
+                
+                LazyVStack (spacing: 20){
+                    
                     Section {
-                        Stepper("choose digit  -  \" \(digitOne) \" ", value: $digitOne, in: 2...12, step: 1)
+                        Stepper("   \(digitToPractise)", value: $digitToPractise, in: 2...12, step: 1) {_ in
+                            newGame()
+                        }
+                        .background(.purple)
+                        .border(.black)
+                    } header: {
+                        Text("Сhoose digit to practise")
+                            .font(.title2)
                     }
+                    
                     Section {
                         Picker("amount of questions", selection: $selectedAmountQuestions) {
-                            ForEach(questionsArray, id: \.self) {
+                            ForEach(amountOfQuestionsToChoose, id: \.self) {
                                 Text("\($0)")
                             }
-
                         }
+                        .padding(.horizontal)
+                        .background(.purple)
+                        .border(.black)
                         .pickerStyle(.segmented)
                     } header: {
                         Text("Choose amount of questions")
+                            .font(.title2)
                     }
                     
                     Section {
                         HStack {
-                            Text("\(digitOne) x \(randomElement) = ")
+                            Text("\(digitToPractise) x \(randomElement)      =    ")
+                                .frame(maxWidth: 200, maxHeight: 100)
+                                .border(.black)
+                                .background(.purple)
                             TextField("Your_answer", value: $userAnswer, format: .number)
                                 .textFieldStyle(.roundedBorder)
-                                .background(.secondary)
+                                .border(.black)
                                 .keyboardType(.decimalPad)
                                 .focused($answerIsFocused)
                         }
                     } header: {
-                        Text("Enter you answer for multiplication")
+                        Text("Enter you answer")
+                            
                     }
                     
-                
+                    
                     Section {
-                        HStack (spacing: 50){
-                            VStack {
-                                Text("Your answer")
-                                Text(userAnswer == 0 ? "Enter you answer" : "\(isAnswerCorrect)")
-                                    .foregroundColor(userAnswer == 0 ? .red : .primary)
-                            }
+                        
+                        VStack {
+                            Text(userAnswer == 0 ? "Enter you answer" : "Your answer: \(isAnswerCorrect)")
+                                .font(.title)
+                                .foregroundColor(isAnswerCorrect == "Wright" ? .green : .red)
+                                .foregroundColor(userAnswer == 0 ? .red : .primary)
+                        }
+                        
+                     
+                        
+                        Text("Your score: \(score)")
+                        
+                        Spacer()
+                        Button("NextQuestion") {
+                            askQuestion()
                             
-                            VStack {
-                                Text("Your score")
-                                Text("\(score)")
-                            }
                         }
+                        .frame(width: 115, height: 40)
+                        .background(.purple)
+                        .foregroundColor(.white)
+                        .buttonBorderShape(.roundedRectangle(radius: 20))
                         
                         
-                        HStack (alignment: .center, spacing: 70) {
-                            Button("CheckAnswer") {
-                                checkAnswer()
-                                showingSheet.toggle()
-                            }
-                                .frame(width: 115, height: 40)
-                                .background(.blue)
-                                .foregroundColor(.white)
-                                .buttonBorderShape(.roundedRectangle(radius: 20))
-                                .sheet(isPresented: $showingSheet) {
-                                    SecondView(
-                                        isAnswerCorrect: (userAnswer == 0 ? "Enter you answer" : "\(isAnswerCorrect)"),
-                                        scoreIs: "Score is \(score)")
-                                }
-                            Button("NextQuestion", action: askQuestion)
-                                .frame(width: 115, height: 40)
-                                .background(.blue)
-                                .foregroundColor(.white)
-                                .buttonBorderShape(.roundedRectangle(radius: 20))
-                        }
-
                     } header: {
                         Text("Results")
                     }
-                    Text("Array text ")
+                   
                     
-                }
-            }
-            .navigationTitle("MultiplePractise")
-            .alert("StarNewGame", isPresented: $showAlert) {
-                Button("NewGame", action: newGame)
-            } message: {
-                Text("You've finished \(selectedAmountQuestions)")
-            }
-            .toolbar {
-                ToolbarItemGroup(placement: .keyboard) {
                     Spacer()
                     
-                    Button("Done") {
-                        answerIsFocused = false
-                        checkAnswer()
+                    Section {
+                        Button("Multiplication table") {
+                            showingSheet.toggle()
+                        }
+                        .sheet(isPresented: $showingSheet) {
+                            ZStack {
+                                Color.green.ignoresSafeArea()
+                                ShowSheetView(arrayOfQuestions: arrayOfQuestions)
+                            }
+                        }
+                        
+                    }
+                    
+                }
+                .padding([.horizontal, .bottom])
+                .navigationTitle("Multiplication Practise")
+                .toolbar {
+                    ToolbarItemGroup(placement: .navigationBarTrailing) {
+                        Button("New game") {
+                            newGame()
+                        }
+                    }
+                }
+                .alert("StarNewGame", isPresented: $showAlert) {
+                    Button("NewGame", action: newGame)
+                } message: {
+                    Text("You've finished \(selectedAmountQuestions)")
+                }
+                .toolbar {
+                    ToolbarItemGroup(placement: .keyboard) {
+                        Spacer()
+                        
+                        Button("Done") {
+                            checkAnswer()
+                            answerIsFocused = false
+                            
+                        }
                     }
                 }
             }
         }
         .onAppear(perform: {
             generatedQuestions()
-            print(arrayOfQuestions)
+            print(arrayOfQuestions.items)
         })
-        .onChange(of: digitOne) { newValue in
-            arrayOfQuestions = []
+        .onChange(of: digitToPractise) { newValue in
+            arrayOfQuestions.items = []
+            //            arrayOfQuestions = []
             generatedQuestions()
-            print(arrayOfQuestions)
+            print(arrayOfQuestions.items)
         }
     }
     
     func checkAnswer() {
-        if userAnswer == digitOne * randomElement {
+        if userAnswer == digitToPractise * randomElement {
             isAnswerCorrect = "Wright"
             score += 1
         } else {
@@ -165,7 +196,7 @@ struct ContentView: View {
         }
         if questionsCounter < selectedAmountQuestions-1 {
             questionsCounter += 1
-           
+            
         } else {
             showAlert = true
         }
@@ -176,7 +207,9 @@ struct ContentView: View {
         selectedAmountQuestions = 5
         questionsCounter = 0
         score = 0
+        userAnswer = 0
         showAlert = false
+        randomElement = Int.random(in: 1...12)
     }
     
     func askQuestion() {
@@ -187,11 +220,11 @@ struct ContentView: View {
     
     func generatedQuestions() {
         for question in 1..<13 {
-            let generatedQuestion = (Question(textToShow: "\(question). What is \(digitOne) x \(question)", correctAnswer: digitOne * question))
-        arrayOfQuestions.append(generatedQuestion)
+            let generatedQuestion = QuestionItems(textToShow: "\(question). \(digitToPractise) x \(question)", correctAnswer: "\(digitToPractise * question)")
+            arrayOfQuestions.items.append(generatedQuestion)
+            
+            //        arrayOfQuestions.append(generatedQuestion)
         }
-        
-        //some code to generate
     }
 }
 
