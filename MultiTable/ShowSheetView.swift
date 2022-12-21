@@ -13,7 +13,8 @@ struct ShowSheetView: View {
     
     var body: some View {
         NavigationView {
- 
+            ZStack {
+            
             List {
                 ForEach(arrayOfQuestions.items) { item in
                     Text ("\(item.textToShow) = \(item.correctAnswer)")
@@ -26,6 +27,8 @@ struct ShowSheetView: View {
                     }
                 }
             }
+        }
+            .background(.yellow)
             .navigationTitle("Table of wright answers")
         }
     }
@@ -34,6 +37,9 @@ struct ShowSheetView: View {
 
 struct ShowSheetView_Previews: PreviewProvider {
     static var previews: some View {
-        ShowSheetView(arrayOfQuestions: dataToShare())
+        ZStack {
+            ShowSheetView(arrayOfQuestions: dataToShare())
+        }
+        .background(.yellow)
     }
 }
